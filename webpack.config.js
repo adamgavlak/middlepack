@@ -2,17 +2,18 @@ const path = require("path")
 const webpack = require("webpack")
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const CleanWebpackPlugin = require("clean-webpack-plugin")
+const ManifestPlugin = require("webpack-manifest-plugin")
 
 module.exports = (env, options) => ({
   entry: {
-    'site': [
+    'assets/site': [
       path.join(__dirname, 'assets/javascripts/app.js'),
       path.join(__dirname, 'assets/stylesheets/site.scss')
     ]
   },
 
   output: {
-    filename: '[name].js',
+    filename: (process.env.NODE_ENV === 'production') ?  '[name]-[hash:7].js' : '[name].js',
     path: path.resolve(__dirname, '.webpack'),
     publicPath: '/'
   },
@@ -45,7 +46,8 @@ module.exports = (env, options) => ({
   plugins: [
     new CleanWebpackPlugin([".webpack"]),
     new ExtractTextPlugin({
-      filename: '[name].css'
-    })
+      filename: (process.env.NODE_ENV === 'production') ?  '[name]-[hash:7].css' : '[name].css'
+    }),
+    new ManifestPlugin()
   ]
 });

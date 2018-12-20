@@ -19,3 +19,17 @@ config[:css_dir] = 'assets/stylesheets'
 page '/*.xml', layout: false
 page '/*.json', layout: false
 page '/*.txt', layout: false
+
+MANIFEST_PATH = ".webpack/manifest.json"
+
+helpers do
+  def pack_path(path)
+    manifest = JSON.parse(File.read(MANIFEST_PATH)) if File.exist?(MANIFEST_PATH)
+    raise "#{MANIFEST_PATH} is missing." unless manifest
+
+    asset_path = manifest[path]
+    raise "Can't find #{path} in manifest. See manifest.json for complete list." unless asset_path
+
+    File.absolute_path(asset_path, '/')
+  end
+end
