@@ -13,7 +13,7 @@ module.exports = (env, options) => ({
   },
 
   output: {
-    filename: (process.env.NODE_ENV === 'production') ?  '[name]-[hash:7].js' : '[name].js',
+    filename: (process.env.NODE_ENV === 'production') ?  '[name].[contenthash].js' : '[name].js',
     path: path.resolve(__dirname, '.webpack'),
     publicPath: '/'
   },
@@ -46,7 +46,7 @@ module.exports = (env, options) => ({
   plugins: [
     new CleanWebpackPlugin([".webpack"]),
     new ExtractTextPlugin({
-      filename: (process.env.NODE_ENV === 'production') ?  '[name]-[hash:7].css' : '[name].css'
+      filename: (process.env.NODE_ENV === 'production') ?  '[name].[hash].css' : '[name].css'
     }),
     new ManifestPlugin()
   ]
