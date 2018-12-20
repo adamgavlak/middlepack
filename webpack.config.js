@@ -1,10 +1,19 @@
 const path = require("path")
-const webpack = require("webpack")
-const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const CleanWebpackPlugin = require("clean-webpack-plugin")
 const ManifestPlugin = require("webpack-manifest-plugin")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const devMode = process.env.NODE_ENV !== "production"
 
 module.exports = (env, options) => ({
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({ cache: true, parallel: true, sourceMap: false }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
+  },
+
   entry: {
     'assets/site': [
       path.join(__dirname, 'assets/javascripts/app.js'),
@@ -13,7 +22,7 @@ module.exports = (env, options) => ({
   },
 
   output: {
-    filename: (process.env.NODE_ENV === 'production') ?  '[name].[contenthash].js' : '[name].js',
+    filename: devMode ? '[name].js' : '[name].[contenthash].js',
     path: path.resolve(__dirname, '.webpack'),
     publicPath: '/'
   },
@@ -21,33 +30,20 @@ module.exports = (env, options) => ({
   module: {
     rules: [
       {
-        test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          use: [
-            'css-loader',
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: function() {
-                  return [
-                    require("autoprefixer"),
-                    require("postcss-flexbugs-fixes")
-                  ]
-                }
-              }
-            },
-            'sass-loader'
-          ]
-        })
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'sass-loader'
+        ]
       }
     ]
   },
 
   plugins: [
     new CleanWebpackPlugin([".webpack"]),
-    new ExtractTextPlugin({
-      filename: (process.env.NODE_ENV === 'production') ?  '[name].[hash].css' : '[name].css'
-    }),
+    new MiniCssExtractPlugin({filename: devMode ? '[name].css' : '[name].[hash].css'}),
     new ManifestPlugin()
   ]
 });

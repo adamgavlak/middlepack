@@ -20,6 +20,7 @@ page '/*.xml', layout: false
 page '/*.json', layout: false
 page '/*.txt', layout: false
 
+ignore "manifest.json"
 MANIFEST_PATH = ".webpack/manifest.json"
 
 helpers do
