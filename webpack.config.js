@@ -4,6 +4,7 @@ const ManifestPlugin = require("webpack-manifest-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const postcssPresetEnv = require('postcss-preset-env');
 const devMode = process.env.NODE_ENV !== "production"
 
 module.exports = (env, options) => ({
@@ -17,7 +18,7 @@ module.exports = (env, options) => ({
   entry: {
     'assets/site': [
       path.join(__dirname, 'assets/javascripts/app.js'),
-      path.join(__dirname, 'assets/stylesheets/site.scss')
+      path.join(__dirname, 'assets/stylesheets/site.css')
     ]
   },
 
@@ -30,12 +31,11 @@ module.exports = (env, options) => ({
   module: {
     rules: [
       {
-        test: /\.(sa|sc|c)ss$/,
+        test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-          'sass-loader'
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          'postcss-loader'
         ]
       }
     ]

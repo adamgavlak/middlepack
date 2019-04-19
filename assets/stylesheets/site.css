@@ -1,5 +1,9 @@
-@import "custom";
-@import '~bootstrap/scss/bootstrap.scss';
+
+@tailwind preflight;
+
+@tailwind components;
+
+@tailwind utilities;
 
 body {
   background-color: #fbc547;
@@ -10,16 +14,6 @@ body {
     "Franklin Gothic Medium", "Century Gothic", "Liberation Sans", sans-serif;
   padding: 18vh 1rem;
   text-align: center;
-}
-
-a {
-  text-decoration: underline;
-  color: rgba(#000, 0.7);
-
-  &:focus,
-  &:hover {
-    color: rgba(#000, 0.6);
-  }
 }
 
 .middleman-logo {
