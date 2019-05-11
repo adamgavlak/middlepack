@@ -10,8 +10,15 @@ const devMode = process.env.NODE_ENV !== "production"
 module.exports = (env, options) => ({
   optimization: {
     minimizer: [
-      new UglifyJsPlugin({ cache: true, parallel: true, sourceMap: false }),
-      new OptimizeCSSAssetsPlugin({})
+      new UglifyJsPlugin({ cache: true, parallel: true, sourceMap: true }),
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {
+          map: {
+            inline: true, // set to false if you want CSS source maps
+            annotation: true
+          }
+        }
+      })
     ]
   },
 
@@ -28,14 +35,18 @@ module.exports = (env, options) => ({
     publicPath: '/'
   },
 
+  devtool: 'source-maps',
+
   module: {
     rules: [
       {
         test: /\.css$/,
+        exclude: /node_modules/,
         use: [
           MiniCssExtractPlugin.loader,
-          { loader: 'css-loader', options: { importLoaders: 1 } },
-          'postcss-loader'
+          { loader: 'css-loader', options: { importLoaders: 1, sourceMap: true } },
+          { loader: 'resolve-url-loader' },
+          { loader: 'postcss-loader', options: { sourceMap: true } }
         ]
       }
     ]
