@@ -36,7 +36,7 @@ After the installation of the packages and gems is successful you can start usin
 
 ## Usage
 
-Usage is the same as with regular [Middleman](https://middlemanapp.com/). To start an application you run:
+Usage is the same as with regular [Middleman](https://middlemanapp.com/). To start a development server you need to run:
 
 ```bash
 bundle exec middleman server
