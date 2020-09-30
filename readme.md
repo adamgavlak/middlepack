@@ -29,7 +29,7 @@ Now we need to install Ruby Gems and NPM packages:
 $ bundle install
 ...
 
-$ npm install
+$ yarn install
 ```
 
 After the installation of the packages and gems is successful you can start using Middlepack.
