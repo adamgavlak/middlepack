@@ -1,5 +1,9 @@
-@import "custom";
-@import '~bootstrap/scss/bootstrap.scss';
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
 
 body {
   background-color: #fbc547;
@@ -12,17 +16,19 @@ body {
   text-align: center;
 }
 
-a {
-  text-decoration: underline;
-  color: rgba(#000, 0.7);
-
-  &:focus,
-  &:hover {
-    color: rgba(#000, 0.6);
-  }
-}
-
 .middleman-logo {
   margin-bottom: 1rem;
   width: 10rem;
+}
+
+.btn {
+  @apply bg-gray-300 px-4 py-2 rounded text-gray-800 font-bold;
+}
+
+.btn:hover {
+  @apply bg-gray-400;
+}
+
+.btn:active, .btn:focus {
+  @apply bg-gray-400;
 }

@@ -4,20 +4,28 @@ const ManifestPlugin = require("webpack-manifest-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const postcssPresetEnv = require('postcss-preset-env');
 const devMode = process.env.NODE_ENV !== "production"
 
 module.exports = (env, options) => ({
   optimization: {
     minimizer: [
-      new UglifyJsPlugin({ cache: true, parallel: true, sourceMap: false }),
-      new OptimizeCSSAssetsPlugin({})
+      new UglifyJsPlugin({ cache: true, parallel: true, sourceMap: true }),
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {
+          map: {
+            inline: true, // set to false if you want CSS source maps
+            annotation: true
+          }
+        }
+      })
     ]
   },
 
   entry: {
     'assets/site': [
       path.join(__dirname, 'assets/javascripts/app.js'),
-      path.join(__dirname, 'assets/stylesheets/site.scss')
+      path.join(__dirname, 'assets/stylesheets/site.css')
     ]
   },
 
@@ -27,15 +35,18 @@ module.exports = (env, options) => ({
     publicPath: '/'
   },
 
+  devtool: 'source-maps',
+
   module: {
     rules: [
       {
-        test: /\.(sa|sc|c)ss$/,
+        test: /\.css$/,
+        exclude: /node_modules/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-          'sass-loader'
+          { loader: 'css-loader', options: { importLoaders: 1, sourceMap: true } },
+          { loader: 'resolve-url-loader' },
+          { loader: 'postcss-loader', options: { sourceMap: true } }
         ]
       }
     ]
