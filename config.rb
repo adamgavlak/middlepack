@@ -5,7 +5,7 @@ activate :livereload
 
 activate :external_pipeline,
   name: :webpack,
-  command: build? ? "npm run build" : "npm run watch",
+  command: build? ? "yarn build" : "yarn watch",
   source: ".webpack",
   latency: 1
 
